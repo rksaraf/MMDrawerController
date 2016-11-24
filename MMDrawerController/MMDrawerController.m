@@ -899,7 +899,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     [self updateShadowForCenterView];
 }
 
--(void)setOpenSide:(MMDrawerSide)openSide{
+-(void)setOpenSide:(MMDrawerSide)openSide animatedStatusBar:(BOOL)animated {
     if(_openSide != openSide){
         _openSide = openSide;
         [self.centerContainerView setOpenSide:openSide];
@@ -907,7 +907,11 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             [self.leftDrawerViewController.view setHidden:YES];
             [self.rightDrawerViewController.view setHidden:YES];
         }
-        [self setNeedsStatusBarAppearanceUpdateIfSupported];
+        if (animated) {
+            [UIView animateWithDuration:0.3 animations:^{[self setNeedsStatusBarAppearanceUpdateIfSupported];}];
+        } else {
+            [self setNeedsStatusBarAppearanceUpdateIfSupported];
+        }
     }
 }
 
@@ -1077,15 +1081,10 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
                 //Drawer is about to become visible
                 [self prepareToPresentDrawer:visibleSide animated:NO];
                 [visibleSideDrawerViewController endAppearanceTransition];
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self setNeedsStatusBarAppearanceUpdateIfSupported];
-                } completion:^(BOOL finished){[self setOpenSide:visibleSide];}];
-                
+                [self setOpenSide:visibleSide];
             }
             else if(visibleSide == MMDrawerSideNone){
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self setNeedsStatusBarAppearanceUpdateIfSupported];
-                } completion:^(BOOL finished){[self setOpenSide:MMDrawerSideNone];}];
+                [self setOpenSide:MMDrawerSideNone];
             }
             
             [self updateDrawerVisualStateForDrawerSide:visibleSide percentVisible:percentVisible];
