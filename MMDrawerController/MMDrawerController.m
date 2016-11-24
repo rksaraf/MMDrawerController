@@ -1047,6 +1047,9 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             else {
                 self.startingPanRect = self.centerContainerView.frame;
             }
+            [UIView animateWithDuration:0.3 animations:^{
+                [self setNeedsStatusBarAppearanceUpdateIfSupported];
+            }];
         }
         case UIGestureRecognizerStateChanged:{
             self.view.userInteractionEnabled = NO;
