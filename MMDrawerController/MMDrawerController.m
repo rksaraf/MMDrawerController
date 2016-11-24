@@ -1047,9 +1047,6 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             else {
                 self.startingPanRect = self.centerContainerView.frame;
             }
-            [UIView animateWithDuration:0.3 animations:^{
-                [self setNeedsStatusBarAppearanceUpdateIfSupported];
-            }];
         }
         case UIGestureRecognizerStateChanged:{
             self.view.userInteractionEnabled = NO;
@@ -1080,10 +1077,15 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
                 //Drawer is about to become visible
                 [self prepareToPresentDrawer:visibleSide animated:NO];
                 [visibleSideDrawerViewController endAppearanceTransition];
-                [self setOpenSide:visibleSide];
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self setNeedsStatusBarAppearanceUpdateIfSupported];
+                } completion:^(BOOL finished){[self setOpenSide:visibleSide];}];
+                
             }
             else if(visibleSide == MMDrawerSideNone){
-                [self setOpenSide:MMDrawerSideNone];
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self setNeedsStatusBarAppearanceUpdateIfSupported];
+                } completion:^(BOOL finished){[self setOpenSide:MMDrawerSideNone];}];
             }
             
             [self updateDrawerVisualStateForDrawerSide:visibleSide percentVisible:percentVisible];
