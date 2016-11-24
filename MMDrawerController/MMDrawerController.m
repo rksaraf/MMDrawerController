@@ -899,7 +899,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     [self updateShadowForCenterView];
 }
 
--(void)setOpenSide:(MMDrawerSide)openSide animatedStatusBar:(BOOL)animated {
+-(void)setOpenSide:(MMDrawerSide)openSide{
     if(_openSide != openSide){
         _openSide = openSide;
         [self.centerContainerView setOpenSide:openSide];
@@ -907,11 +907,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             [self.leftDrawerViewController.view setHidden:YES];
             [self.rightDrawerViewController.view setHidden:YES];
         }
-        if (animated) {
-            [UIView animateWithDuration:0.3 animations:^{[self setNeedsStatusBarAppearanceUpdateIfSupported];}];
-        } else {
-            [self setNeedsStatusBarAppearanceUpdateIfSupported];
-        }
+        
+        [UIView animateWithDuration:0.3 animations:^{[self setNeedsStatusBarAppearanceUpdateIfSupported];}];
     }
 }
 
